@@ -21,9 +21,13 @@ QVariant CalculationResultModel::data(const QModelIndex &index, int role) const
     }
 
     switch (role) {
-    case Point:
+    case valueX:
     {
-        return m_data.at(index.row());
+        return m_data.at(index.row()).x();
+    }
+    case valueY:
+    {
+        return m_data.at(index.row()).y();
     }
     default:
         return QVariant();
@@ -33,11 +37,12 @@ QVariant CalculationResultModel::data(const QModelIndex &index, int role) const
 QHash<int, QByteArray> CalculationResultModel::roleNames() const
 {
     QHash<int, QByteArray> roles = QAbstractListModel::roleNames();
-    roles[Point] = "point";
+    roles[valueX] = "valueX";
+    roles[valueY] = "valueY";
     return roles;
 }
 
-void CalculationResultModel::add(QPointF& point)
+void CalculationResultModel::add(QPointF point)
 {
     beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
     m_data.append(point);

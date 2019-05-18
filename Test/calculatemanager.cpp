@@ -23,6 +23,8 @@ void CalculateManager::calcStart(int function_index, float A, float B, float C, 
 
     calculator = new Calculator(data);
 
+    calculator->moveToThread(calcThread);
+
     connect(calcThread, SIGNAL(started()), calculator, SLOT(calculate()));
     connect(calculator, SIGNAL(functionCalculated(QPointF)), this, SLOT(functionCalculated(QPointF)));
     connect(calculator, SIGNAL(calculationFinished()), this, SLOT(calculationFinished()));
@@ -32,10 +34,7 @@ void CalculateManager::calcStart(int function_index, float A, float B, float C, 
 
 void CalculateManager::calcPause()
 {
-    if(m_AllowedCalc)
-        m_AllowedCalc = false;
-    else
-        m_AllowedCalc = true;
+    calculator->pause();
 }
 
 void CalculateManager::calcBreak()
@@ -59,16 +58,6 @@ void CalculateManager::calculationFinished()
 
 void CalculateManager::functionCalculated(QPointF value)
 {
-    qDebug() << QString::number(value.x()) +" "+QString::number(value.y());
+    emit functionCalculatedSignal(value);
 }
-
-void CalculateManager::setAllowedCalc(bool AllowedCalc)
-{
-    if (m_AllowedCalc == AllowedCalc)
-        return;
-
-    m_AllowedCalc = AllowedCalc;
-    emit AllowedCalcChanged(m_AllowedCalc);
-}
-
 

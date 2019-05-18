@@ -4,7 +4,7 @@ Rectangle
 {
     id: rectangle
     width: 200
-    height: 30
+    height: 20
 
     border.width: 1
     border.color: "black"
@@ -21,7 +21,7 @@ Rectangle
         anchors.topMargin: 0
         anchors.left: parent.left
         anchors.leftMargin: 0
-        font.pointSize: 20
+        font.pointSize: 10
         width: parent.width/2
     }
 
@@ -40,7 +40,7 @@ Rectangle
     Text {
         id: textY
         text: valueY
-        font.pointSize: 20
+        font.pointSize: 10
         verticalAlignment: Text.AlignVCenter
         horizontalAlignment: Text.AlignHCenter
         anchors.top: parent.top

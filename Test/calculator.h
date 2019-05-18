@@ -6,12 +6,16 @@
 #include "calculationdata.h"
 #include "calculationcommand.h"
 #include "quadraticcommand.h"
+#include <QMutex>
+#include <QWaitCondition>
 
 class Calculator : public QObject
 {
     Q_OBJECT
 public:
     explicit Calculator(calcData& data, QObject *parent = nullptr);
+    void pause();
+
 
 signals:
     void calculationStarted();
@@ -22,6 +26,10 @@ public slots:
     void calculate();
 
 private:
+    QMutex m_continue;
+    QWaitCondition m_pauseManager;
+    bool m_cancelRequested = false;
+    bool m_pauseRequired = false;
     calcData m_data;
     CalculationCommand* command;
 };

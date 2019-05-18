@@ -10,6 +10,8 @@ Rectangle
 
     property bool calcInactive: true
 
+    signal calculationStarted(var minValue,var maxValue)
+
     Rectangle
     {
         id:rectCombo
@@ -320,6 +322,10 @@ Rectangle
                 text: qsTr("Pause")
                 Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
                 anchors.verticalCenter: parent.verticalCenter
+                onClicked:
+                {
+                    CalcMgn.calcPause();
+                }
             }
 
             Button {
@@ -357,13 +363,10 @@ Rectangle
             checkInput(inputTo) &&
             checkInput(inputStep))
         {
-            console.log("start")
-
+            CalcMgn.calcStart(cbFx.currentIndex,inputA.text,inputB.text,inputC.text,inputFrom.text,inputTo.text,inputStep.text)
+            calculationStarted(inputFrom.text,inputTo.text)
+            calcInactive = false
         }
-
-        CalcMgn.calcStart(cbFx.currentIndex,inputA.text,inputB.text,inputC.text,inputFrom.text,inputTo.text,inputStep.text)
-
-        calcInactive = false
     }
 }
 

@@ -10,7 +10,7 @@ class CalculationResultModel : public QAbstractListModel
 public:
     enum Roles {
             valueX = Qt::UserRole + 1,
-            valueY =
+            valueY
         };
 
     explicit CalculationResultModel(QObject *parent = nullptr);
@@ -22,7 +22,7 @@ public:
 signals:
 
 public slots:
-    void add(QPointF& point);
+    void add(QPointF point);
 
 private:
     QList<QPointF> m_data;

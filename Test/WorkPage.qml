@@ -4,9 +4,11 @@ import QtQuick.Layouts 1.3
 
 Rectangle
 {
-    id: rectangle
+    id: rectMain
     border.width: 1
     border.color: "black"
+
+    property bool calcInactive: true
 
     Rectangle
     {
@@ -24,6 +26,7 @@ Rectangle
 
         ComboBox {
             id: cbFx
+            enabled: calcInactive
             anchors.rightMargin: 1
             anchors.leftMargin: 1
             anchors.bottomMargin: 1
@@ -31,8 +34,6 @@ Rectangle
             anchors.fill: parent
 
             model:ComboBoxFxModel{}
-
-            onCurrentIndexChanged: console.log(currentIndex)
         }
     }
 
@@ -63,11 +64,12 @@ Rectangle
 
             TextInput {
                 id: inputC
+                enabled: calcInactive
                 x: 31
                 y: 70
                 height: 20
                 font.pixelSize: 15
-                text: qsTr("")
+                text: qsTr("2")
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.verticalCenter: parent.verticalCenter
@@ -91,10 +93,11 @@ Rectangle
 
             TextInput {
                 id: inputB
+                enabled: calcInactive
                 x: 31
                 y: 91
                 height: 20
-                text: qsTr("")
+                text: qsTr("3")
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.fill: parent
@@ -138,10 +141,11 @@ Rectangle
 
             TextInput {
                 id: inputA
+                enabled: calcInactive
                 x: 31
                 y: 67
                 height: 20
-                text: qsTr("")
+                text: qsTr("4")
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.fill: parent
@@ -224,7 +228,8 @@ Rectangle
 
             TextInput {
                 id: inputFrom
-                text: qsTr("")
+                enabled: calcInactive
+                text: qsTr("1")
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.fill: parent
@@ -246,7 +251,8 @@ Rectangle
 
             TextInput {
                 id: inputTo
-                text: qsTr("")
+                enabled: calcInactive
+                text: qsTr("20")
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.fill: parent
@@ -267,7 +273,8 @@ Rectangle
 
             TextInput {
                 id: inputStep
-                text: qsTr("")
+                enabled: calcInactive
+                text: qsTr("1")
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.fill: parent
@@ -320,13 +327,15 @@ Rectangle
                 text: qsTr("Break")
                 Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
                 anchors.verticalCenter: parent.verticalCenter
+
+                onClicked: CalcMgn.calcBreak();
             }
         }
     }
 
     function checkInput(input)
     {
-        if(isNaN(Number(input.text)) || input.text === "")
+        if(isNaN(Number(input.displayText)) || input.displayText === "")
         {
            input.parent.border.color = "red"
            return false
@@ -341,14 +350,21 @@ Rectangle
 
     function calcStart()
     {
-        var available = true
+        if( checkInput(inputA) &&
+            checkInput(inputB) &&
+            checkInput(inputC) &&
+            checkInput(inputFrom) &&
+            checkInput(inputTo) &&
+            checkInput(inputStep))
+        {
+            console.log("start")
 
-        available = checkInput(inputA)
+        }
 
+        CalcMgn.calcStart(cbFx.currentIndex,inputA.text,inputB.text,inputC.text,inputFrom.text,inputTo.text,inputStep.text)
 
-        CalcMgn.calcStart(cbFx.currentIndex)
+        calcInactive = false
     }
-
 }
 
 
@@ -367,15 +383,16 @@ Rectangle
 
 
 
+
+
 /*##^## Designer {
-    D{i:0;autoSize:true;height:480;width:640}D{i:2;anchors_height:200}D{i:5;anchors_width:80}
-D{i:4;anchors_width:80;anchors_y:70}D{i:7;anchors_width:80}D{i:8;anchors_height:200;anchors_width:80;anchors_y:70}
-D{i:9;anchors_height:200;anchors_width:200}D{i:11;anchors_height:200;anchors_width:200}
-D{i:10;anchors_height:200;anchors_width:200}D{i:12;anchors_height:200;anchors_width:200}
-D{i:3;anchors_height:200;anchors_width:80}D{i:14;anchors_height:200;anchors_width:200}
-D{i:15;anchors_height:200;anchors_width:200}D{i:16;anchors_width:200}D{i:18;anchors_width:200}
-D{i:17;anchors_height:20;anchors_width:80}D{i:20;anchors_width:200}D{i:19;anchors_height:20;anchors_width:80}
-D{i:22;anchors_height:200;anchors_width:200}D{i:21;anchors_height:20;anchors_width:80}
-D{i:13;anchors_height:200;anchors_width:200}
+    D{i:0;autoSize:true;height:480;width:640}D{i:3;anchors_height:200;anchors_width:80}
+D{i:2;anchors_height:200}D{i:5;anchors_width:80}D{i:8;anchors_height:200;anchors_width:80;anchors_y:70}
+D{i:7;anchors_width:80}D{i:9;anchors_height:200;anchors_width:200}D{i:10;anchors_height:200;anchors_width:200}
+D{i:12;anchors_height:200;anchors_width:200}D{i:11;anchors_height:200;anchors_width:200}
+D{i:13;anchors_height:200;anchors_width:200}D{i:4;anchors_width:80;anchors_y:70}D{i:15;anchors_height:200;anchors_width:200}
+D{i:16;anchors_width:200}D{i:17;anchors_height:20;anchors_width:80}D{i:19;anchors_height:20;anchors_width:80}
+D{i:18;anchors_width:200}D{i:21;anchors_height:20;anchors_width:80}D{i:20;anchors_width:200}
+D{i:22;anchors_height:200;anchors_width:200}D{i:14;anchors_height:200;anchors_width:200}
 }
  ##^##*/

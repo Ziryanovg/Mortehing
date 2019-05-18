@@ -4,5 +4,8 @@
         <file>WorkPage.qml</file>
         <file>ChartPage.qml</file>
         <file>ComboBoxFxModel.qml</file>
+        <file>ResultPage.qml</file>
+        <file>ResultPageHeader.qml</file>
+        <file>ResultPageDelegate.qml</file>
     </qresource>
 </RCC>

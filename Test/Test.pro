@@ -1,4 +1,4 @@
-QT += quick
+QT += quick charts
 CONFIG += c++11
 
 # The following define makes your compiler emit warnings if you use
@@ -14,6 +14,8 @@ DEFINES += QT_DEPRECATED_WARNINGS
 
 SOURCES += \
         calculatemanager.cpp \
+        calculationresultmodel.cpp \
+        calculator.cpp \
         main.cpp
 
 RESOURCES += qml.qrc
@@ -30,4 +32,9 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    calculatemanager.h
+    calculatemanager.h \
+    calculationcommand.h \
+    calculationdata.h \
+    calculationresultmodel.h \
+    calculator.h \
+    quadraticcommand.h

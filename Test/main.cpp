@@ -2,6 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "calculatemanager.h"
+#include "calculationresultmodel.h"
 
 int main(int argc, char *argv[])
 {
@@ -11,9 +12,13 @@ int main(int argc, char *argv[])
 
     QQmlApplicationEngine engine;
 
-    CalculateManager& calc_mgn = CalculateManager::getInstance();
+    CalculateManager& calcMgn = CalculateManager::getInstance();
 
-    engine.rootContext()->setContextProperty("CalcMgn",&calc_mgn);
+    CalculationResultModel resultModel;
+
+    engine.rootContext()->setContextProperty("CalcMgn",&calcMgn);
+    engine.rootContext()->setContextProperty("resultModel",&resultModel);
+
 
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));

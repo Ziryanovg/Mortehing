@@ -9,10 +9,18 @@ Rectangle
     ListView
     {
         anchors.fill: parent
+        snapMode: ListView.NoSnap
+        boundsBehavior: Flickable.DragAndOvershootBounds
 
-        header: ResultPageHeader{}
+        header: ResultPageHeader{
+            anchors.left: parent.left
+            anchors.right: parent.right
+        }
 
-        delegate: ResultPageDelegate{}
+        delegate: ResultPageDelegate{
+            anchors.left: parent.left
+            anchors.right: parent.right
+        }
 
         model:resultModel
     }

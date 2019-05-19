@@ -4,7 +4,6 @@ import QtQuick.Layouts 1.3
 Rectangle
 {
     id: rectangle
-    width: 200
     height: 30
 
     border.width: 1

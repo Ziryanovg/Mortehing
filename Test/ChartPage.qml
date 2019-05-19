@@ -1,4 +1,5 @@
 import QtQuick 2.0
+import QtQuick.Window 2.12
 
 Rectangle
 {
@@ -67,6 +68,29 @@ Rectangle
             paintFunction()
 
 
+        }
+    }
+
+    Loader {
+            id: winld
+            active: false
+            sourceComponent: Window {
+                width: 200
+                height: 300
+                visible: true
+
+                ResultPage{anchors.fill: parent}
+
+                onVisibleChanged: if(!visible) winld.active = false
+            }
+        }
+
+    MouseArea
+    {
+        anchors.fill: parent
+        onClicked:
+        {
+            winld.active = true
         }
     }
 }

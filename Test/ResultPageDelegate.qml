@@ -3,7 +3,6 @@ import QtQuick 2.0
 Rectangle
 {
     id: rectangle
-    width: 200
     height: 20
 
     border.width: 1

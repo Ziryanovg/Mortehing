@@ -13,12 +13,13 @@ DEFINES += QT_DEPRECATED_WARNINGS
 #DEFINES += QT_DISABLE_DEPRECATED_BEFORE=0x060000    # disables all the APIs deprecated before Qt 6.0.0
 
 SOURCES += \
-        calculatemanager.cpp \
-        calculationresultmodel.cpp \
-        calculator.cpp \
-        main.cpp
+    Source/Model/calculationresultmodel.cpp \
+        Source/calculatemanager.cpp \
+        Source/calculator.cpp \
+        Source/main.cpp \
 
-RESOURCES += qml.qrc
+RESOURCES += Source/qml.qrc
+
 
 # Additional import path used to resolve QML modules in Qt Creator's code model
 QML_IMPORT_PATH =
@@ -32,9 +33,21 @@ else: unix:!android: target.path = /opt/$${TARGET}/bin
 !isEmpty(target.path): INSTALLS += target
 
 HEADERS += \
-    calculatemanager.h \
-    calculationcommand.h \
-    calculationdata.h \
-    calculationresultmodel.h \
-    calculator.h \
-    quadraticcommand.h
+    Source/Commands/calculationcommand.h \
+    Source/Commands/logcommand.h \
+    Source/Commands/quadraticcommand.h \
+    Source/Commands/sincommand.h \
+    Source/Commands/sincoscommand.h \
+    Source/Model/calculationresultmodel.h \
+    Source/calculatemanager.h \
+    Source/calculator.h \
+
+
+DISTFILES += \
+    Source/ChartPage.qml \
+    Source/ComboBoxFxModel.qml \
+    Source/ResultPage.qml \
+    Source/ResultPageDelegate.qml \
+    Source/ResultPageHeader.qml \
+    Source/WorkPage.qml \
+    Source/main.qml

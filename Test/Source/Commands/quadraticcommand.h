@@ -2,8 +2,6 @@
 #define QUADRATICCOMMAND_H
 
 #include "calculationcommand.h"
-#include <QDebug>
-#include "calculationdata.h"
 
 class QuadraticCommand :public CalculationCommand
 {

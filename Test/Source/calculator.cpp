@@ -1,5 +1,9 @@
 #include "calculator.h"
 #include <QThread>
+#include "Commands/quadraticcommand.h"
+#include "Commands/sincoscommand.h"
+#include "Commands/logcommand.h"
+#include "Commands/sincommand.h"
 
 Calculator::Calculator(calcData& data,QObject *parent) : QObject(parent),m_data(data)
 {
@@ -9,8 +13,14 @@ Calculator::Calculator(calcData& data,QObject *parent) : QObject(parent),m_data(
 void Calculator::calculate()
 {
     switch (m_data.functionIndex) {
-    case 0: command = new QuadraticCommand();
-        break;
+        case 0: command = new QuadraticCommand();
+            break;
+        case 1: command = new SinCosCommand();
+            break;
+        case 2: command = new LogCommand();
+            break;
+        case 3: command = new SinCommand();
+            break;
     }
 
     for (float x=m_data.From;x<=m_data.To;x+=m_data.Step) {

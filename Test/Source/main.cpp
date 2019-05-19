@@ -2,7 +2,7 @@
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
 #include "calculatemanager.h"
-#include "calculationresultmodel.h"
+#include "Model/calculationresultmodel.h"
 
 int main(int argc, char *argv[])
 {

@@ -44,7 +44,7 @@ QHash<int, QByteArray> CalculationResultModel::roleNames() const
     return roles;
 }
 
-QPointF CalculationResultModel::getItem(quint8 index)
+QPointF CalculationResultModel::getItem(qint32 index)
 {
     if(m_data.size() >= index)
         return m_data.at(index);

@@ -3,11 +3,15 @@
 
 #include <QObject>
 #include <QDebug>
-#include "calculationdata.h"
-#include "calculationcommand.h"
-#include "quadraticcommand.h"
 #include <QMutex>
 #include <QWaitCondition>
+#include "Commands/calculationcommand.h"
+
+struct calcData
+{
+    int functionIndex;
+    float A,B,C,From,To,Step;
+};
 
 class Calculator : public QObject
 {

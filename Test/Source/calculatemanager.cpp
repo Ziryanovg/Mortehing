@@ -1,6 +1,5 @@
 #include "calculatemanager.h"
 #include <QThread>
-#include "calculationdata.h"
 
 CalculateManager& CalculateManager::getInstance()
 {

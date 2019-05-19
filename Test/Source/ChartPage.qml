@@ -75,8 +75,8 @@ Rectangle
             id: winld
             active: false
             sourceComponent: Window {
-                width: 200
-                height: 300
+                width: 300
+                height: 400
                 visible: true
 
                 ResultPage{anchors.fill: parent}

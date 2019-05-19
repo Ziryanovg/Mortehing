@@ -19,7 +19,7 @@ public:
     virtual QVariant data(const QModelIndex &index, int role) const;
     virtual QHash<int, QByteArray> roleNames() const;
 
-    Q_INVOKABLE QPointF getItem(quint8 index);
+    Q_INVOKABLE QPointF getItem(qint32 index);
 
 signals:
 

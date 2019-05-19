@@ -5,6 +5,8 @@
 #include <QDebug>
 #include "calculator.h"
 
+
+
 class CalculateManager : public QObject
 {
     Q_OBJECT

@@ -10,6 +10,8 @@ CalculateManager& CalculateManager::getInstance()
 
 void CalculateManager::calcStart(int function_index, float A, float B, float C, float From, float To, float Step)
 {
+    emit calculationStarted();
+
     calcThread = new QThread;
 
     calcData data;
@@ -39,21 +41,17 @@ void CalculateManager::calcPause()
 
 void CalculateManager::calcBreak()
 {
-    calcThread->quit();
-    calcThread->wait();
+    calculator->cancel();
 }
 
 void CalculateManager::calculationFinished()
 {
-    if(calcThread)
-    {
-        calcThread->quit();
-        calcThread->wait();
-    }
+    calcThread->quit();
+    calcThread->deleteLater();
 
     if(calculator) delete calculator;
 
-    qDebug() << "finished";
+    emit calculationFinishedToQml();
 }
 
 void CalculateManager::functionCalculated(QPointF value)

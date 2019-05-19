@@ -1,4 +1,5 @@
 #include "calculationresultmodel.h"
+#include <QDebug>
 
 CalculationResultModel::CalculationResultModel(QObject *parent) : QAbstractListModel(parent)
 {
@@ -23,6 +24,7 @@ QVariant CalculationResultModel::data(const QModelIndex &index, int role) const
     switch (role) {
     case valueX:
     {
+
         return m_data.at(index.row()).x();
     }
     case valueY:
@@ -42,6 +44,12 @@ QHash<int, QByteArray> CalculationResultModel::roleNames() const
     return roles;
 }
 
+QPointF CalculationResultModel::getItem(quint8 index)
+{
+    if(m_data.size() >= index)
+        return m_data.at(index);
+}
+
 void CalculationResultModel::add(QPointF point)
 {
     beginInsertRows(QModelIndex(), m_data.size(), m_data.size());
@@ -49,5 +57,10 @@ void CalculationResultModel::add(QPointF point)
     endInsertRows();
 
     emit dataChanged(createIndex(0, 0), createIndex(m_data.size()-1, 0));
+}
+
+void CalculationResultModel::clearModel()
+{
+    m_data.clear();
 }
 

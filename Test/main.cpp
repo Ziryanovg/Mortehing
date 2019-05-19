@@ -19,6 +19,7 @@ int main(int argc, char *argv[])
     engine.rootContext()->setContextProperty("CalcMgn",&calcMgn);
     engine.rootContext()->setContextProperty("resultModel",&resultModel);
     QObject::connect(&CalculateManager::getInstance(), SIGNAL(functionCalculatedSignal(QPointF)), &resultModel, SLOT(add(QPointF)));
+    QObject::connect(&CalculateManager::getInstance(), SIGNAL(calculationStarted()), &resultModel, SLOT(clearModel()));
 
 
     const QUrl url(QStringLiteral("qrc:/main.qml"));

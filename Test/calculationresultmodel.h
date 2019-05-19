@@ -19,10 +19,13 @@ public:
     virtual QVariant data(const QModelIndex &index, int role) const;
     virtual QHash<int, QByteArray> roleNames() const;
 
+    Q_INVOKABLE QPointF getItem(quint8 index);
+
 signals:
 
 public slots:
     void add(QPointF point);
+    void clearModel();
 
 private:
     QList<QPointF> m_data;

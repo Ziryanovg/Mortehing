@@ -8,9 +8,21 @@ Rectangle
     border.width: 1
     border.color: "black"
 
-    property bool calcInactive: true
+    property bool calcActive: false
 
-    signal calculationStarted(var minValue,var maxValue)
+    signal calculationStartedToMain(var minValue,var maxValue)
+    signal calculationFinishedToMain()
+
+    Connections
+    {
+        target:CalcMgn
+
+        onCalculationFinishedToQml:
+        {
+            calcActive = false
+            calculationFinishedToMain()
+        }
+    }
 
     Rectangle
     {
@@ -28,7 +40,7 @@ Rectangle
 
         ComboBox {
             id: cbFx
-            enabled: calcInactive
+            enabled: !calcActive
             anchors.rightMargin: 1
             anchors.leftMargin: 1
             anchors.bottomMargin: 1
@@ -66,7 +78,7 @@ Rectangle
 
             TextInput {
                 id: inputC
-                enabled: calcInactive
+                enabled: !calcActive
                 x: 31
                 y: 70
                 height: 20
@@ -95,7 +107,7 @@ Rectangle
 
             TextInput {
                 id: inputB
-                enabled: calcInactive
+                enabled: !calcActive
                 x: 31
                 y: 91
                 height: 20
@@ -143,7 +155,7 @@ Rectangle
 
             TextInput {
                 id: inputA
-                enabled: calcInactive
+                enabled: !calcActive
                 x: 31
                 y: 67
                 height: 20
@@ -230,7 +242,7 @@ Rectangle
 
             TextInput {
                 id: inputFrom
-                enabled: calcInactive
+                enabled: !calcActive
                 text: qsTr("1")
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
@@ -253,7 +265,7 @@ Rectangle
 
             TextInput {
                 id: inputTo
-                enabled: calcInactive
+                enabled: !calcActive
                 text: qsTr("20")
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
@@ -275,7 +287,7 @@ Rectangle
 
             TextInput {
                 id: inputStep
-                enabled: calcInactive
+                enabled: !calcActive
                 text: qsTr("1")
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
@@ -309,10 +321,7 @@ Rectangle
                 id: btnStart
                 height: 80
                 text: qsTr("Start")
-                Layout.fillHeight: false
-                anchors.verticalCenter: parent.verticalCenter
-                anchors.left: parent.left
-                anchors.leftMargin: 0
+                enabled: !calcActive
 
                 onClicked: calcStart()
             }
@@ -320,19 +329,22 @@ Rectangle
             Button {
                 id: btnPause
                 text: qsTr("Pause")
-                Layout.alignment: Qt.AlignHCenter | Qt.AlignVCenter
-                anchors.verticalCenter: parent.verticalCenter
+                enabled: calcActive
                 onClicked:
                 {
                     CalcMgn.calcPause();
+
+                    if(btnPause.text==="Pause")
+                        btnPause.text = "Continue"
+                    else
+                        btnPause.text = "Pause"
                 }
             }
 
             Button {
                 id: btnBreak
                 text: qsTr("Break")
-                Layout.alignment: Qt.AlignRight | Qt.AlignVCenter
-                anchors.verticalCenter: parent.verticalCenter
+                enabled: calcActive
 
                 onClicked: CalcMgn.calcBreak();
             }
@@ -364,8 +376,8 @@ Rectangle
             checkInput(inputStep))
         {
             CalcMgn.calcStart(cbFx.currentIndex,inputA.text,inputB.text,inputC.text,inputFrom.text,inputTo.text,inputStep.text)
-            calculationStarted(inputFrom.text,inputTo.text)
-            calcInactive = false
+            calculationStartedToMain(inputFrom.text,inputTo.text)
+            calcActive = true
         }
     }
 }

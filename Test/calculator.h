@@ -15,6 +15,7 @@ class Calculator : public QObject
 public:
     explicit Calculator(calcData& data, QObject *parent = nullptr);
     void pause();
+    void cancel();
 
 
 signals:

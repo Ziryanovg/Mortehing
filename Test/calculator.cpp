@@ -14,16 +14,22 @@ void Calculator::calculate()
     }
 
     for (float x=m_data.From;x<=m_data.To;x+=m_data.Step) {
+
         float result = command->calculate(x,m_data.A,m_data.B,m_data.C);
         QPointF resultPoint(x,result);
         emit functionCalculated(resultPoint);
+
         QThread::usleep(2000);
+
         m_continue.lock();
         if (m_pauseRequired) {
             m_pauseManager.wait(&m_continue);
             // unlocks m_continue and blocks the thread until m_pauseManager.wakeAll()
         }
         m_continue.unlock();
+
+        if(m_cancelRequested)
+            break;
     }
 
     delete command;
@@ -39,4 +45,9 @@ void Calculator::pause()
         this -> m_pauseRequired = false;
         this -> m_pauseManager.wakeAll();
     }
+}
+
+void Calculator::cancel()
+{
+    m_cancelRequested = true;
 }

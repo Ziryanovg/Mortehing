@@ -24,10 +24,10 @@ private:
     Calculator* calculator;
 
 signals:
-    void AllowedCalcChanged(bool AllowedCalc);
+    void calculationStarted();
     void functionCalculatedSignal(QPointF value);
     void pauseCalculation();
-    void resumeCalculation();
+    void calculationFinishedToQml();
 
 public slots:
     void calculationFinished();

@@ -31,36 +31,29 @@ Window {
         anchors.bottom: rectBar.top
         anchors.bottomMargin: 5
 
-        onCalculationStarted:
+        onCalculationStartedToMain:
         {
+            progressBar.value = 0;
             progressBar.to = maxValue - minValue
         }
-    }
 
-    ResultPage
-    {
-        id: resultPage
-        width: 200
-        anchors.bottom: rectBar.top
-        anchors.bottomMargin: 5
-        anchors.top: parent.top
-        anchors.topMargin: 0
-        anchors.left: workPage.right
-        anchors.leftMargin: 2
+        onCalculationFinishedToMain:
+        {
 
+        }
     }
 
     ChartPage
     {
         id: chartPage
-        anchors.left: resultPage.right
+        anchors.left: workPage.right
         anchors.leftMargin: 5
+        anchors.right: parent.right
+        anchors.rightMargin: 0
         anchors.bottom: rectBar.top
         anchors.bottomMargin: 5
         anchors.top: parent.top
         anchors.topMargin: 0
-        anchors.right: parent.right
-        anchors.rightMargin: 0
 
     }
 

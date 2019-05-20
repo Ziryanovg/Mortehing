@@ -2,6 +2,7 @@
 #define SINCOMMAND_H
 
 #include "calculationcommand.h"
+#include <QtMath>
 
 class SinCommand :public CalculationCommand
 {
@@ -9,7 +10,7 @@ class SinCommand :public CalculationCommand
 public:
     SinCommand()=default;
 
-    float calculate(float x,float A, float B, float C=0) override
+    qreal calculate(qreal x,qreal A, qreal B, qreal C=0) override
     {
         return A / ( sin(x*x) * B );
     }

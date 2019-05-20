@@ -13,7 +13,7 @@ class CalculateManager : public QObject
 public:
     static CalculateManager& getInstance();
 
-    Q_INVOKABLE void calcStart(int function_index,float A,float B,float C,float From,float To, float Step, bool FromLoad);
+    Q_INVOKABLE void calcStart(qint32 function_index,qreal A,qreal B,qreal C,qreal From,qreal To, qreal Step, bool FromLoad);
     Q_INVOKABLE void calcPause();
     Q_INVOKABLE void calcBreak();
 

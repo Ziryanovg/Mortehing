@@ -8,7 +8,7 @@ class CalculationCommand
 public:
     virtual ~CalculationCommand() = default;
 
-    virtual float calculate(float x,float A, float B, float C=0)=0;
+    virtual qreal calculate(qreal x,qreal A, qreal B, qreal C=0)=0;
 };
 
 #endif // CALCULATIONCOMMAND_H

@@ -2,6 +2,7 @@
 #define QUADRATICCOMMAND_H
 
 #include "calculationcommand.h"
+#include <QtMath>
 
 class QuadraticCommand :public CalculationCommand
 {
@@ -9,7 +10,7 @@ class QuadraticCommand :public CalculationCommand
 public:
     QuadraticCommand()=default;
 
-    float calculate(float x,float A, float B, float C=0) override
+    qreal calculate(qreal x,qreal A, qreal B, qreal C=0) override
     {
         return A*(x*2)+B*x+C;
     }

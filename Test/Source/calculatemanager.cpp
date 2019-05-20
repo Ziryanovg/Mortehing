@@ -8,7 +8,7 @@ CalculateManager& CalculateManager::getInstance()
     return instance;
 }
 
-void CalculateManager::calcStart(int function_index, float A, float B, float C, float From, float To, float Step, bool FromLoad)
+void CalculateManager::calcStart(qint32 function_index,qreal A,qreal B,qreal C,qreal From,qreal To, qreal Step, bool FromLoad)
 {
     m_calcThread = new QThread;
 

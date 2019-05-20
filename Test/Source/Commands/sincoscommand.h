@@ -2,6 +2,7 @@
 #define SINCOSCOMMAND_H
 
 #include "calculationcommand.h"
+#include <QtMath>
 
 class SinCosCommand :public CalculationCommand
 {
@@ -9,7 +10,7 @@ class SinCosCommand :public CalculationCommand
 public:
     SinCosCommand()=default;
 
-    float calculate(float x,float A, float B, float C=0) override
+    qreal calculate(qreal x,qreal A, qreal B, qreal C=0) override
     {
         return A*sin(x)+B*cos(C*x);
     }

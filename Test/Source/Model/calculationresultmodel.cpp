@@ -1,6 +1,7 @@
 #include "calculationresultmodel.h"
 #include <QDebug>
 
+
 CalculationResultModel::CalculationResultModel(QObject *parent) : QAbstractListModel(parent)
 {
 

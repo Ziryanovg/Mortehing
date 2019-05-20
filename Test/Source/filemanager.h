@@ -10,7 +10,7 @@ class FileManager : public QObject
 public:
     static FileManager& getInstance();
 
-    Q_INVOKABLE int save(int newFunctionIndex,qreal newA,qreal newB,qreal newC,qreal newFrom,qreal newTo, qreal newStep);
+    Q_INVOKABLE int save(qint32 newFunctionIndex,qreal newA,qreal newB,qreal newC,qreal newFrom,qreal newTo, qreal newStep);
     Q_INVOKABLE int load();
 
 protected:
@@ -19,7 +19,7 @@ protected:
     FileManager& operator=(FileManager&);
 
 signals:
-    void fileLoad(int newFunctionIndex,qreal newA,qreal newB,qreal newC,qreal newFrom,qreal newTo, qreal newStep, int calcedCount);
+    void fileLoad(qint32 newFunctionIndex,qreal newA,qreal newB,qreal newC,qreal newFrom,qreal newTo, qreal newStep, int calcedCount);
 
 public slots:
 };

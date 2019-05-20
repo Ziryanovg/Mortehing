@@ -14,7 +14,7 @@ FileManager &FileManager::getInstance()
     return instance;
 }
 
-int FileManager::save(int newFunctionIndex,qreal newA,qreal newB,qreal newC,qreal newFrom,qreal newTo, qreal newStep)
+int FileManager::save(qint32 newFunctionIndex,qreal newA,qreal newB,qreal newC,qreal newFrom,qreal newTo, qreal newStep)
 {
     QFile file("data.txt");
 
@@ -61,7 +61,7 @@ int FileManager::load()
 
     calcModel.clearModel();
 
-    double from = valueFrom;
+    float from = valueFrom;
 
     while (!stream.atEnd()) {
         QPointF point(from,stream.readLine().toFloat());

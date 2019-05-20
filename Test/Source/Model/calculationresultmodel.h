@@ -3,6 +3,7 @@
 
 #include <QObject>
 #include <QAbstractListModel>
+#include <QPointF>
 
 class CalculationResultModel : public QAbstractListModel
 {

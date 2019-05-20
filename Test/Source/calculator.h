@@ -9,8 +9,8 @@
 
 struct calcData
 {
-    int functionIndex;
-    float A,B,C,From,To,Step;
+    qint32 functionIndex;
+    qreal A,B,C,From,To,Step;
 };
 
 class Calculator : public QObject

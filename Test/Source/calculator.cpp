@@ -23,9 +23,9 @@ void Calculator::calculate()
             break;
     }
 
-    for (float x=m_data.From;x<=m_data.To;x+=m_data.Step) {
+    for (qreal x=m_data.From;x<=m_data.To;x+=m_data.Step) {
 
-        float result = command->calculate(x,m_data.A,m_data.B,m_data.C);
+        qreal result = command->calculate(x,m_data.A,m_data.B,m_data.C);
         QPointF resultPoint(x,result);
         emit functionCalculated(resultPoint);
 

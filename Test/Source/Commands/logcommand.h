@@ -2,6 +2,7 @@
 #define LOGCOMMAND_H
 
 #include "calculationcommand.h"
+#include <QtMath>
 
 class LogCommand :public CalculationCommand
 {
@@ -9,7 +10,7 @@ class LogCommand :public CalculationCommand
 public:
     LogCommand()=default;
 
-    float calculate(float x,float A, float B, float C=0) override
+    qreal calculate(qreal x,qreal A, qreal B, qreal C=0) override
     {
         return A*log(B*x);
     }

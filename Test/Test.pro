@@ -16,6 +16,7 @@ SOURCES += \
     Source/Model/calculationresultmodel.cpp \
         Source/calculatemanager.cpp \
         Source/calculator.cpp \
+    Source/filemanager.cpp \
         Source/main.cpp \
 
 RESOURCES += Source/qml.qrc
@@ -40,7 +41,8 @@ HEADERS += \
     Source/Commands/sincoscommand.h \
     Source/Model/calculationresultmodel.h \
     Source/calculatemanager.h \
-    Source/calculator.h \
+    Source/calculator.h \ \
+    Source/filemanager.h
 
 
 DISTFILES += \

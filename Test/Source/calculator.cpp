@@ -29,7 +29,7 @@ void Calculator::calculate()
         QPointF resultPoint(x,result);
         emit functionCalculated(resultPoint);
 
-        QThread::usleep(2000);
+        QThread::usleep(1000);
 
         m_continue.lock();
         if (m_pauseRequired) {
@@ -38,8 +38,7 @@ void Calculator::calculate()
         }
         m_continue.unlock();
 
-        if(m_cancelRequested)
-            break;
+        if(m_cancelRequested) break;
     }
 
     delete command;
@@ -52,12 +51,13 @@ void Calculator::pause()
     if(!m_pauseRequired)
         m_pauseRequired = true;
     else {
-        this -> m_pauseRequired = false;
-        this -> m_pauseManager.wakeAll();
+        m_pauseRequired = false;
+        m_pauseManager.wakeAll();
     }
 }
 
 void Calculator::cancel()
 {
+    pause();
     m_cancelRequested = true;
 }

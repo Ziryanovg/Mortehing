@@ -33,8 +33,8 @@ Window {
 
         onCalculationStartedToMain:
         {
-            progressBar.value = 0;
             progressBar.to = maxValue - minValue
+            progressBar.value = calced;
         }
 
         onCalculationFinishedToMain:

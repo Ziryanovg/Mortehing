@@ -1,5 +1,6 @@
 #include "calculatemanager.h"
 #include <QThread>
+#include "Model/calculationresultmodel.h"
 
 CalculateManager& CalculateManager::getInstance()
 {
@@ -7,48 +8,63 @@ CalculateManager& CalculateManager::getInstance()
     return instance;
 }
 
-void CalculateManager::calcStart(int function_index, float A, float B, float C, float From, float To, float Step)
+void CalculateManager::calcStart(int function_index, float A, float B, float C, float From, float To, float Step, bool FromLoad)
 {
-    emit calculationStarted();
+    m_calcThread = new QThread;
 
-    calcThread = new QThread;
+    m_data.functionIndex = function_index;
+    m_data.A = A;
+    m_data.B = B;
+    m_data.C = C;
+    m_data.From = From;
+    m_data.To = To;
+    m_data.Step = Step;
 
-    calcData data;
-    data.functionIndex = function_index;
-    data.A = A;
-    data.B = B;
-    data.C = C;
-    data.From = From;
-    data.To = To;
-    data.Step = Step;
+    CalculationResultModel& calcModel = CalculationResultModel::getInstance();
 
-    calculator = new Calculator(data);
+    if(!FromLoad)
+    {
 
-    calculator->moveToThread(calcThread);
+        calcModel.clearModel();
+    }
+    else {
+        m_data.From = From + calcModel.rowCount(QModelIndex())*Step;
+    }
 
-    connect(calcThread, SIGNAL(started()), calculator, SLOT(calculate()));
-    connect(calculator, SIGNAL(functionCalculated(QPointF)), this, SLOT(functionCalculated(QPointF)));
-    connect(calculator, SIGNAL(calculationFinished()), this, SLOT(calculationFinished()));
 
-    calcThread->start();
+
+    m_calculator = new Calculator(m_data);
+
+    m_calculator->moveToThread(m_calcThread);
+
+    connect(m_calcThread, SIGNAL(started()), m_calculator, SLOT(calculate()));
+    connect(m_calculator, SIGNAL(functionCalculated(QPointF)), this, SLOT(functionCalculated(QPointF)));
+    connect(m_calculator, SIGNAL(calculationFinished()), this, SLOT(calculationFinished()));
+
+    m_calcThread->start();
 }
 
 void CalculateManager::calcPause()
 {
-    calculator->pause();
+    m_calculator->pause();
 }
 
 void CalculateManager::calcBreak()
 {
-    calculator->cancel();
+    m_calculator->cancel();
+}
+
+calcData CalculateManager::getCurrentCalcData()
+{
+    return m_data;
 }
 
 void CalculateManager::calculationFinished()
 {
-    calcThread->quit();
-    calcThread->deleteLater();
+    m_calcThread->quit();
+    m_calcThread->deleteLater();
 
-    if(calculator) delete calculator;
+    if(m_calculator) delete m_calculator;
 
     emit calculationFinishedToQml();
 }

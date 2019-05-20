@@ -6,6 +6,12 @@ CalculationResultModel::CalculationResultModel(QObject *parent) : QAbstractListM
 
 }
 
+CalculationResultModel &CalculationResultModel::getInstance()
+{
+    static CalculationResultModel instance;
+    return instance;
+}
+
 int CalculationResultModel::rowCount(const QModelIndex &parent) const
 {
     if (parent.isValid()) {
@@ -48,6 +54,8 @@ QPointF CalculationResultModel::getItem(qint32 index)
 {
     if(m_data.size() >= index)
         return m_data.at(index);
+
+    return QPointF();
 }
 
 void CalculationResultModel::add(QPointF point)
@@ -63,4 +71,5 @@ void CalculationResultModel::clearModel()
 {
     m_data.clear();
 }
+
 

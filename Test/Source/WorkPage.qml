@@ -9,9 +9,17 @@ Rectangle
     border.color: "black"
 
     property bool calcActive: false
+    property var functionIndex:0
+    property var valueA: 5
+    property var valueB: 4
+    property var valueC: 3
+    property var valueFrom: -100
+    property var valueTo: 100
+    property var valueStep: 1
 
-    signal calculationStartedToMain(var minValue,var maxValue)
+    signal calculationStartedToMain(var minValue,var maxValue,var calced)
     signal calculationFinishedToMain()
+
 
     Connections
     {
@@ -21,6 +29,25 @@ Rectangle
         {
             calcActive = false
             calculationFinishedToMain()
+        }
+    }
+
+    Connections
+    {
+        target:FileMgn
+
+        onFileLoad:
+        {
+            functionIndex = newFunctionIndex
+            valueA = newA
+            valueB = newB
+            valueC = newC
+            valueFrom = newFrom
+            valueTo = newTo
+            valueStep = newStep
+            calculationStartedToMain(valueFrom,valueTo,calcedCount)
+            CalcMgn.calcStart(cbFx.currentIndex,inputA.text,inputB.text,inputC.text,inputFrom.text,inputTo.text,inputStep.text,true)
+            pauseClick()
         }
     }
 
@@ -46,6 +73,7 @@ Rectangle
             anchors.bottomMargin: 1
             anchors.topMargin: 1
             anchors.fill: parent
+            currentIndex: functionIndex
 
             model:ComboBoxFxModel{}
         }
@@ -83,7 +111,7 @@ Rectangle
                 y: 70
                 height: 20
                 font.pixelSize: 15
-                text: qsTr("2")
+                text: valueC
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.verticalCenter: parent.verticalCenter
@@ -111,7 +139,7 @@ Rectangle
                 x: 31
                 y: 91
                 height: 20
-                text: qsTr("3")
+                text: valueB
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.fill: parent
@@ -159,7 +187,7 @@ Rectangle
                 x: 31
                 y: 67
                 height: 20
-                text: qsTr("4")
+                text: valueA
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.fill: parent
@@ -243,7 +271,7 @@ Rectangle
             TextInput {
                 id: inputFrom
                 enabled: !calcActive
-                text: qsTr("1")
+                text: valueFrom
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.fill: parent
@@ -266,7 +294,7 @@ Rectangle
             TextInput {
                 id: inputTo
                 enabled: !calcActive
-                text: qsTr("20")
+                text: valueTo
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.fill: parent
@@ -288,7 +316,7 @@ Rectangle
             TextInput {
                 id: inputStep
                 enabled: !calcActive
-                text: qsTr("1")
+                text: valueStep
                 anchors.rightMargin: 2
                 anchors.leftMargin: 2
                 anchors.fill: parent
@@ -300,7 +328,7 @@ Rectangle
     Rectangle {
         id: rectBtn
         y: 419
-        height: 80
+        height: 110
         color: "#ffffff"
         border.width: 1
         anchors.right: parent.right
@@ -312,10 +340,14 @@ Rectangle
 
         RowLayout
         {
-            height: 80
+            id: layoutStart
+            height: 40
+            anchors.top: parent.top
+            anchors.topMargin: 10
+            anchors.right: parent.right
             anchors.rightMargin: 10
-            anchors.leftMargin: 10
-            anchors.fill: parent
+            anchors.left: parent.left
+            anchors.leftMargin: 20
 
             Button {
                 id: btnStart
@@ -332,12 +364,7 @@ Rectangle
                 enabled: calcActive
                 onClicked:
                 {
-                    CalcMgn.calcPause();
-
-                    if(btnPause.text==="Pause")
-                        btnPause.text = "Continue"
-                    else
-                        btnPause.text = "Pause"
+                    pauseClick()
                 }
             }
 
@@ -349,14 +376,83 @@ Rectangle
                 onClicked: CalcMgn.calcBreak();
             }
         }
+
+        RowLayout {
+            id: layoutSave
+            anchors.top: layoutStart.bottom
+            anchors.topMargin: 0
+            anchors.bottom: parent.bottom
+            anchors.bottomMargin: 0
+            anchors.right: parent.right
+            anchors.rightMargin: 5
+            anchors.left: parent.left
+            anchors.leftMargin: 60
+
+            Button {
+                id: btnSave
+                text: qsTr("Save")
+
+                Timer {
+                    id:timerSave
+                    interval: 1000; running: false; repeat: false
+                    onTriggered: btnSave.text = "Save"
+                }
+
+                onClicked:
+                {
+                    var result = FileMgn.save(cbFx.currentIndex,inputA.text,inputB.text,inputC.text,inputFrom.text,inputTo.text,inputStep.text);
+                    if(result===0)
+                        btnSave.text = "Saved"
+                    else
+                        btnSave.text = "Error"
+
+                    timerSave.start()
+                }
+            }
+
+            Button {
+                id: btnLoad
+                text: qsTr("Load")
+                Timer {
+                    id:timerLoad
+                    interval: 1000; running: false; repeat: false
+                    onTriggered: btnLoad.text = "Load"
+                }
+
+                onClicked:
+                {
+                    var result = FileMgn.load();
+                    if(result===0)
+                    {
+                        calcActive = true
+                        btnLoad.text = "Loaded"
+                    }
+                    else
+                        btnLoad.text = "Error"
+
+                    timerLoad.start()
+                }
+            }
+        }
     }
+
+    function pauseClick()
+    {
+        CalcMgn.calcPause();
+
+        if(btnPause.text==="Pause")
+            btnPause.text = "Continue"
+        else
+            btnPause.text = "Pause"
+    }
+
 
     function checkInput(input)
     {
         if(isNaN(Number(input.displayText)) || input.displayText === "")
         {
-           input.parent.border.color = "red"
-           return false
+            input.parent.border.color = "red"
+            return false
         }
         else
         {
@@ -369,14 +465,14 @@ Rectangle
     function calcStart()
     {
         if( checkInput(inputA) &&
-            checkInput(inputB) &&
-            checkInput(inputC) &&
-            checkInput(inputFrom) &&
-            checkInput(inputTo) &&
-            checkInput(inputStep))
+                checkInput(inputB) &&
+                checkInput(inputC) &&
+                checkInput(inputFrom) &&
+                checkInput(inputTo) &&
+                checkInput(inputStep))
         {
-            CalcMgn.calcStart(cbFx.currentIndex,inputA.text,inputB.text,inputC.text,inputFrom.text,inputTo.text,inputStep.text)
-            calculationStartedToMain(inputFrom.text,inputTo.text)
+            CalcMgn.calcStart(cbFx.currentIndex,inputA.text,inputB.text,inputC.text,inputFrom.text,inputTo.text,inputStep.text,false)
+            calculationStartedToMain(inputFrom.text,inputTo.text,0)
             calcActive = true
         }
     }
@@ -400,14 +496,23 @@ Rectangle
 
 
 
+
+
+
+
+
+
+
+
 /*##^## Designer {
-    D{i:0;autoSize:true;height:480;width:640}D{i:3;anchors_height:200;anchors_width:80}
-D{i:2;anchors_height:200}D{i:5;anchors_width:80}D{i:8;anchors_height:200;anchors_width:80;anchors_y:70}
-D{i:7;anchors_width:80}D{i:9;anchors_height:200;anchors_width:200}D{i:10;anchors_height:200;anchors_width:200}
-D{i:12;anchors_height:200;anchors_width:200}D{i:11;anchors_height:200;anchors_width:200}
-D{i:13;anchors_height:200;anchors_width:200}D{i:4;anchors_width:80;anchors_y:70}D{i:15;anchors_height:200;anchors_width:200}
-D{i:16;anchors_width:200}D{i:17;anchors_height:20;anchors_width:80}D{i:19;anchors_height:20;anchors_width:80}
-D{i:18;anchors_width:200}D{i:21;anchors_height:20;anchors_width:80}D{i:20;anchors_width:200}
-D{i:22;anchors_height:200;anchors_width:200}D{i:14;anchors_height:200;anchors_width:200}
+    D{i:0;autoSize:true;height:480;width:640}D{i:4;anchors_width:80;anchors_y:70}D{i:3;anchors_height:200;anchors_width:80}
+D{i:2;anchors_height:200}D{i:7;anchors_width:80}D{i:9;anchors_height:200;anchors_width:200}
+D{i:8;anchors_height:200;anchors_width:80;anchors_y:70}D{i:10;anchors_height:200;anchors_width:200}
+D{i:11;anchors_height:200;anchors_width:200}D{i:13;anchors_height:200;anchors_width:200}
+D{i:12;anchors_height:200;anchors_width:200}D{i:14;anchors_height:200;anchors_width:200}
+D{i:5;anchors_width:80}D{i:16;anchors_width:200}D{i:17;anchors_height:20;anchors_width:80}
+D{i:18;anchors_width:200}D{i:20;anchors_width:200}D{i:19;anchors_height:20;anchors_width:80}
+D{i:22;anchors_height:200;anchors_width:200}D{i:21;anchors_height:20;anchors_width:80}
+D{i:15;anchors_height:200;anchors_width:200}D{i:26;anchors_height:80}D{i:30;anchors_height:100;anchors_width:100}
 }
  ##^##*/
